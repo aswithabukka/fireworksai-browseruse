@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fireworks AI BrowserUse - Technical Documentation</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            color: #333;
+            background: #fff;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+        }
+        h3 {
+            color: #555;
+            margin-top: 20px;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            line-height: 1.4;
+        }
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        blockquote {
+            border-left: 4px solid #3498db;
+            padding-left: 20px;
+            margin: 20px 0;
+            color: #555;
+            font-style: italic;
+        }
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin: 8px 0;
+        }
+        .toc a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+        @media print {
+            body {
+                max-width: 100%;
+                padding: 20px;
+            }
+            pre {
+                page-break-inside: avoid;
+            }
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>📚 Fireworks AI BrowserUse - Technical Documentation</h1>
+
+<div class="toc">
+    <h2>📋 Table of Contents</h2>
+    <ul>
+        <li><a href="#overview">1. Project Overview</a></li>
+        <li><a href="#tech-stack">2. Tech Stack</a></li>
+        <li><a href="#design-patterns">3. Core Design Patterns</a></li>
+        <li><a href="#execution-flow">4. Execution Flow</a></li>
+        <li><a href="#implementation">5. Key Implementation Details</a></li>
+        <li><a href="#challenges">6. Problem-Solving Techniques</a></li>
+        <li><a href="#configuration">7. Configuration</a></li>
+        <li><a href="#usage">8. Usage</a></li>
+        <li><a href="#architecture">9. Architecture Summary</a></li>
+    </ul>
+</div>
+
+<h2 id="overview">📋 Project Overview</h2>
+
+<p><strong>What it does:</strong> Autonomous AI agent that controls a web browser to navigate, extract content, and perform web automation tasks.</p>
+
+<p><strong>Key Innovation:</strong> Combines LLM reasoning (Fireworks AI) with browser automation (Playwright) to create an agent that can "see" web pages via screenshots and make intelligent decisions.</p>
+
+<h2 id="tech-stack">🏗️ Tech Stack</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Component</th>
+            <th>Technology</th>
+            <th>Purpose</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>AI Models</strong></td>
+            <td>Fireworks AI (DeepSeek-V3, FireLLaVA-13b)</td>
+            <td>High-performance inference, multimodal vision</td>
+        </tr>
+        <tr>
+            <td><strong>Browser</strong></td>
+            <td>Playwright + browser-use</td>
+            <td>Stealth automation, cross-browser support</td>
+        </tr>
+        <tr>
+            <td><strong>Backend</strong></td>
+            <td>FastAPI + Python 3.11-3.13</td>
+            <td>Async support, modern API</td>
+        </tr>
+        <tr>
+            <td><strong>Validation</strong></td>
+            <td>Pydantic</td>
+            <td>Type safety, automatic validation</td>
+        </tr>
+        <tr>
+            <td><strong>Config</strong></td>
+            <td>TOML</td>
+            <td>Human-readable configuration</td>
+        </tr>
+        <tr>
+            <td><strong>Retry</strong></td>
+            <td>Tenacity</td>
+            <td>Exponential backoff for failures</td>
+        </tr>
+        <tr>
+            <td><strong>Tokens</strong></td>
+            <td>Tiktoken</td>
+            <td>Cost management, token counting</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2 id="design-patterns">🎯 Core Design Patterns</h2>
+
+<h3>1. Agent Pattern (Autonomous AI)</h3>
+<pre><code class="language-python"># File: app/agent/base.py
+class BaseAgent:
+    state: AgentState = AgentState.IDLE
+    memory: Memory = Memory()
+    
+    async def run(self, request: str):
+        self.update_memory("user", request)
+        
+        while self.current_step < self.max_steps:
+            await self.step()  # Think + Act
+            if self.state == AgentState.FINISHED:
+                break</code></pre>
+
+<h3>2. ReAct Pattern (Reasoning + Acting)</h3>
+<pre><code class="language-python"># File: app/agent/react.py
+async def step(self):
+    should_act = await self.think()  # Decide
+    if should_act:
+        result = await self.act()    # Execute
+    return result</code></pre>
+
+<h3>3. Function Calling (Tool Use)</h3>
+<pre><code class="language-python"># File: app/agent/toolcall.py
+async def think(self):
+    response = await self.llm.ask_tool(
+        messages=self.messages,
+        tools=self.available_tools.to_params(),
+        tool_choice="auto"  # LLM decides which tool
+    )
+    self.tool_calls = response.tool_calls</code></pre>
+
+<h3>4. Memory Management</h3>
+<pre><code class="language-python"># File: app/schema.py
+class Message(BaseModel):
+    role: Literal["system", "user", "assistant", "tool"]
+    content: Optional[str]
+    base64_image: Optional[str]  # Screenshots!
+
+class Memory:
+    messages: List[Message] = []
+    max_messages: int = 100</code></pre>
+
+<h2 id="execution-flow">🔄 Execution Flow</h2>
+
+<div class="highlight">
+    <strong>Example Task:</strong> "Go to amazon.com and find iPhone prices"
+</div>
+
+<ol>
+    <li><strong>THINK:</strong> LLM sees request → Decides to use browser_use(go_to_url)</li>
+    <li><strong>ACT:</strong> Navigate to amazon.com → Take screenshot</li>
+    <li><strong>THINK:</strong> LLM sees Amazon homepage → Decides to click search box</li>
+    <li><strong>ACT:</strong> Click element → Take screenshot</li>
+    <li><strong>THINK:</strong> LLM sees active search → Decides to type "iPhone"</li>
+    <li><strong>ACT:</strong> Input text → Press Enter → Take screenshot</li>
+    <li><strong>THINK:</strong> LLM sees results → Decides to extract prices</li>
+    <li><strong>ACT:</strong> Extract content using LLM</li>
+    <li><strong>THINK:</strong> LLM sees extracted data → Decides to terminate</li>
+    <li><strong>ACT:</strong> Terminate → Return results</li>
+</ol>
+
+<h2 id="implementation">🛠️ Key Implementation Details</h2>
+
+<h3>Browser Initialization</h3>
+<pre><code class="language-python"># File: app/tool/browser_use_tool.py
+async def _ensure_browser_initialized(self):
+    browser_config = {
+        "headless": False,  # Visible browser (anti-detection)
+        "disable_security": True,
+        "extra_chromium_args": [
+            "--disable-blink-features=AutomationControlled"  # Hide automation
+        ]
+    }
+    
+    self.browser = BrowserUseBrowser(BrowserConfig(**browser_config))
+    self.context = await self.browser.new_context()</code></pre>
+
+<h3>Content Extraction</h3>
+<pre><code class="language-python"># File: app/tool/browser_use_tool.py
+async def _extract_content(self, goal: str):
+    # Get page text
+    page_text = await self.context.page.inner_text("body")
+    
+    # Build prompt
+    prompt = f"Extract: {goal}\n\nPage content:\n{page_text[:5000]}"
+    
+    # Use LLM to extract
+    result = await self.llm.ask(messages=[Message.user_message(prompt)])
+    
+    # Take screenshot
+    screenshot = await self.context.page.screenshot()
+    
+    return ToolResult(output=result, base64_image=base64.b64encode(screenshot))</code></pre>
+
+<h3>LLM API Call</h3>
+<pre><code class="language-python"># File: app/llm.py
+@retry(wait=wait_random_exponential(min=1, max=60), stop=stop_after_attempt(6))
+async def ask_tool(self, messages, tools, tool_choice="auto"):
+    # Count tokens
+    input_tokens = self.count_message_tokens(messages)
+    if not self.check_token_limit(input_tokens):
+        raise TokenLimitExceeded()
+    
+    # API call
+    response = await self.client.chat.completions.create(
+        model=self.model,
+        messages=messages,
+        tools=tools,
+        tool_choice=tool_choice
+    )
+    
+    # Track usage
+    self.update_token_count(response.usage.prompt_tokens, response.usage.completion_tokens)
+    
+    return response.choices[0].message</code></pre>
+
+<h2 id="challenges">🚨 Problem-Solving Techniques</h2>
+
+<h3>Challenge 1: Bot Detection</h3>
+
+<p><strong>Problem:</strong> Websites block automated browsers (Cloudflare, etc.)</p>
+
+<p><strong>Solutions:</strong></p>
+<ol>
+    <li><strong>Non-headless mode:</strong> <code>headless = false</code> (full browser features)</li>
+    <li><strong>Remove automation flags:</strong> <code>--disable-blink-features=AutomationControlled</code></li>
+    <li><strong>Realistic user agent:</strong> Custom UA string</li>
+    <li><strong>Proxy support:</strong> Residential IPs to avoid datacenter detection</li>
+    <li><strong>Natural delays:</strong> <code>await asyncio.sleep()</code> between actions</li>
+    <li><strong>Session persistence:</strong> Maintain cookies across requests</li>
+    <li><strong>Real Chrome profile:</strong> Use actual Chrome with existing cookies/logins</li>
+</ol>
+
+<pre><code class="language-toml"># config/config.toml
+[browser]
+headless = false
+disable_security = true
+extra_chromium_args = [
+    "--disable-blink-features=AutomationControlled",
+    "--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)..."
+]
+
+[browser.proxy]
+server = "http://residential-proxy.com:8080"
+username = "user"
+password = "pass"</code></pre>
+
+<h3>Challenge 2: Token Limits & Cost</h3>
+
+<p><strong>Solutions:</strong></p>
+<ol>
+    <li><strong>Token counting:</strong> Pre-flight checks before API calls</li>
+    <li><strong>Observation limits:</strong> Truncate long outputs (<code>max_observe = 10000</code>)</li>
+    <li><strong>Memory management:</strong> Keep only recent 100 messages</li>
+    <li><strong>Token tracking:</strong> Monitor cumulative usage</li>
+</ol>
+
+<pre><code class="language-python"># Check before API call
+if not self.check_token_limit(input_tokens):
+    raise TokenLimitExceeded()
+
+# Truncate results
+if self.max_observe:
+    result = result[:self.max_observe]</code></pre>
+
+<h3>Challenge 3: API Failures</h3>
+
+<p><strong>Solutions:</strong></p>
+<ol>
+    <li><strong>Exponential backoff:</strong> Retry with increasing delays (1s, 2s, 4s, 8s, 16s, 32s, 60s)</li>
+    <li><strong>Error handling:</strong> Graceful degradation on failures</li>
+    <li><strong>Don't retry token errors:</strong> Immediately fail on TokenLimitExceeded</li>
+</ol>
+
+<pre><code class="language-python">@retry(
+    wait=wait_random_exponential(min=1, max=60),
+    stop=stop_after_attempt(6),
+    retry=retry_if_exception_type((OpenAIError, Exception))
+)
+async def ask_tool(self, ...):
+    # API call with automatic retry</code></pre>
+
+<h3>Challenge 4: Agent Stuck in Loops</h3>
+
+<p><strong>Solutions:</strong></p>
+<ol>
+    <li><strong>Stuck detection:</strong> Count duplicate responses</li>
+    <li><strong>Intervention:</strong> Add prompt to change strategy</li>
+    <li><strong>Max steps:</strong> Hard limit of 20 steps</li>
+</ol>
+
+<pre><code class="language-python">def is_stuck(self) -> bool:
+    last_message = self.memory.messages[-1]
+    duplicate_count = sum(
+        1 for msg in self.memory.messages[:-1]
+        if msg.content == last_message.content
+    )
+    return duplicate_count >= 2
+
+def handle_stuck_state(self):
+    stuck_prompt = "Observed duplicate responses. Try new strategies."
+    self.next_step_prompt = f"{stuck_prompt}\n{self.next_step_prompt}"</code></pre>
+
+<h2 id="configuration">⚙️ Configuration</h2>
+
+<h3>config/config.toml</h3>
+<pre><code class="language-toml">[llm]
+model = "accounts/fireworks/models/deepseek-v3"
+base_url = "https://api.fireworks.ai/inference/v1"
+api_key = "your-api-key"
+max_tokens = 4096
+temperature = 0.0
+
+[llm.vision]
+model = "accounts/fireworks/models/firellava-13b"
+
+[browser]
+headless = false
+disable_security = true
+extra_chromium_args = ["--disable-blink-features=AutomationControlled"]
+
+[browser.proxy]
+server = "http://proxy.com:8080"
+username = "user"
+password = "pass"</code></pre>
+
+<h2 id="usage">🚀 Usage</h2>
+
+<pre><code class="language-bash"># Install dependencies
+pip install -r requirements.txt
+playwright install
+
+# Configure
+cp config/config.example.toml config/config.toml
+# Edit config.toml with your Fireworks API key
+
+# Run
+python main.py
+# Enter: "Go to amazon.com and find iPhone prices"</code></pre>
+
+<h2 id="architecture">📊 Architecture Summary</h2>
+
+<pre><code>User Input
+    ↓
+Manus Agent (orchestrates everything)
+    ├─ BaseAgent: State management, execution loop
+    ├─ ReActAgent: Think-Act cycle
+    ├─ ToolCallAgent: LLM function calling
+    └─ BrowserAgent: Browser state injection
+    ↓
+Tool Collection
+    ├─ BrowserUseTool: Web automation
+    ├─ PythonExecute: Code execution
+    └─ Terminate: End execution
+    ↓
+Fireworks AI LLM
+    ├─ Function calling (tool selection)
+    ├─ Vision support (screenshots)
+    └─ Token management
+    ↓
+Playwright Browser
+    ├─ Stealth features
+    ├─ Screenshot capture
+    └─ Session persistence
+    ↓
+Target Website</code></pre>
+
+<h2>🎯 Key Takeaways</h2>
+
+<ol>
+    <li><strong>Autonomous:</strong> Agent decides what to do based on context, not hardcoded logic</li>
+    <li><strong>Multimodal:</strong> LLM can "see" web pages via screenshots</li>
+    <li><strong>Resilient:</strong> Retry logic, error handling, stuck detection</li>
+    <li><strong>Stealthy:</strong> Anti-detection techniques for accessing protected sites</li>
+    <li><strong>Cost-aware:</strong> Token counting and limits prevent runaway costs</li>
+    <li><strong>Extensible:</strong> Easy to add new tools via Strategy pattern</li>
+</ol>
+
+<hr>
+
+<p style="text-align: center; color: #888; margin-top: 40px;">
+    <strong>End of Documentation</strong><br>
+    Generated: October 2025
+</p>
+
+</body>
+</html>
